@@ -13,7 +13,7 @@ class RestaurantsController extends Controller
 
 
   public function getRestaurants(){
-    $url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants%20in%20Bangsue&key=AIzaSyAg9Rds1NqIp3_c8CzqJABKnN90vz8pSC8';
+    $url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants%20in%20Bangsue&key=' . $_ENV['GOOGLE_PLACE_API'];;
     $response = file_get_contents($url);
     $newsData = json_decode($response);
 
