@@ -6,7 +6,12 @@
 //  import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
  import "bootstrap";
  import 'bootstrap/dist/css/bootstrap.css'
+ import axios from 'axios';
+ import VueGeolocation from 'vue-browser-geolocation';
+
+
 //  import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 
 window.Vue = require('vue').default;
 
@@ -24,6 +29,8 @@ window.Vue = require('vue').default;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('searchpage', require('./components/SearchPage.vue').default);
+Vue.prototype.$http = axios;
+Vue.use(VueGeolocation);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

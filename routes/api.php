@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use SKAgarwal\GoogleApi\PlacesApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+
+Route::group(['prefix' => 'v1', 'middleware' ], function(){
+    Route::get('/user', function( Request $request ){
+        
+});
+Route::get('/restaurants', 'App\Http\Controllers\API\RestaurantsController@getRestaurants');
+// Route::post('/restaurants', 'API\RestaurantsController@postNewCafe');
+// Route::get('/restaurants/{id}', 'API\RestaurantsController@getRestaurant');
 });
