@@ -3,12 +3,15 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
+//  import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
  import "bootstrap";
- import "bootstrap/dist/css/bootstrap.min.css";
+ import 'bootstrap/dist/css/bootstrap.css'
+//  import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 window.Vue = require('vue').default;
 
+// Vue.use(BootstrapVue)
+// Vue.use(IconsPlugin)
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

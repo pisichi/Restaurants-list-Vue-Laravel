@@ -7,41 +7,102 @@
                         <h1>
                             Search Restaurant
                         </h1>
+                        <small>your location </small>
                     </div>
                 </div>
 
                 <div class="row justify-content-center mt-5">
                     <div class="col-lg-8 col-md-10 col-sm-12">
-                        <div class="card search-wrapper p-3">
-                            <div class="row justify-content-center">
-                                <div class="col">
-                                    <div class="input-group">
-                                        <input
-                                            type="search"
-                                            class="form-control mx-2"
-                                            placeholder="Search"
-                                            aria-label="Search"
-                                            aria-describedby="search-addon"
-                                        />
+                        <div class="search-wrapper ">
+                            <div id="tabs" class="container">
+                                <div class="tabs">
+                                    <a
+                                        v-on:click="activetab = 1"
+                                        v-bind:class="[
+                                            activetab === 1 ? 'active' : ''
+                                        ]"
+                                        >Radius Search</a
+                                    >
+                                    <a
+                                        v-on:click="activetab = 2"
+                                        v-bind:class="[
+                                            activetab === 2 ? 'active' : ''
+                                        ]"
+                                        >Keyword search</a
+                                    >
+                                </div>
 
-                                        <select
-                                            class="form-select mx-2"
-                                            aria-label="Default select example"
-                                        >
-                                            <option selected
-                                                >radius(km)</option
-                                            >
-                                            <option value="5">5km</option>
-                                            <option value="10">10km</option>
-                                            <option value="15">15km</option>
-                                        </select>
+                                <div class="content">
+                                    <div
+                                        v-if="activetab === 1"
+                                        class="tabcontent"
+                                    >
+                                        <div class="row justify-content-center">
+                                            <div class="col-md">
+                                                <div class="input-group">
+                                                    <input
+                                                        type="search"
+                                                        class="form-control mx-2"
+                                                        placeholder="Search"
+                                                        aria-label="Search"
+                                                        aria-describedby="search-addon"
+                                                        v-model="search"
+                                                    />
 
-                                        <button
-                                            type="button mx-2"
-                                            class="btn btn-primary"
-                                        >
-                                            search
-                                        </button>
+                                                    <button
+                                                        type="button mx-2"
+                                                        class="btn btn-primary"
+                                                    >
+                                                        search
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        v-if="activetab === 2"
+                                        class="tabcontent"
+                                    >
+                                        <div class="row justify-content-center">
+                                            <div class="col-md">
+                                                <div class="input-group">
+                                                    <input
+                                                        type="search"
+                                                        class="form-control mx-2"
+                                                        placeholder="Search"
+                                                        aria-label="Search"
+                                                        aria-describedby="search-addon"
+                                                        v-model="search"
+                                                    />
+
+                                                    <select
+                                                        class="form-select mx-2"
+                                                        aria-label="Default select example"
+                                                        v-model="radius"
+                                                    >
+                                                        <option selected
+                                                            >radius(km)</option
+                                                        >
+                                                        <option value="5"
+                                                            >5km</option
+                                                        >
+                                                        <option value="10"
+                                                            >10km</option
+                                                        >
+                                                        <option value="15"
+                                                            >15km</option
+                                                        >
+                                                    </select>
+
+                                                    <button
+                                                        type="button mx-2"
+                                                        class="btn btn-primary"
+                                                    >
+                                                        search
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -55,11 +116,15 @@
                     <div class="col col-lg-8 col-md-10 col-sm-12">
                         <div class="row justify-content-center">
                             <div class="col-6 ml-auto text-center">
-                                keyword:
+                                keyword: {{ search }}
                             </div>
 
                             <div class="col-6 ml-auto text-center">
-                                search result:
+                                search result: {{ restaurants.length }}
+                            </div>
+
+                            <div class="col-6 ml-auto text-center">
+                                radius: {{ radius }}
                             </div>
                         </div>
                     </div>
@@ -69,37 +134,118 @@
                     <div
                         class="result-wrapper col col-lg-8 col-md-10 col-sm-12 p-5"
                     >
-                        <div class="row justify-content-center">
-                            <ul class="list-group">
-                                <li
-                                    v-for="item in restaurants"
-                                    v-bind:key="item"
-                                    class="list-group-item my-2"
-                                >
-                                    <ul class="list-group">
-                                        <li class="list-group-item">
-                                            {{ item.name }}
-                                        </li>
-                                        <li class="list-group-item">
-                                            {{ item.geometry.location }}
-                                        </li>
-                                        <li class="list-group-item">
-                                            {{ item.opening_hours }}
-                                        </li>
-                                        <li class="list-group-item">
-                                            {{ item.types }}
-                                        </li>
-                                        <li class="list-group-item">
-                                            {{ item.rating }}
-                                        </li>
-                                        <li class="list-group-item">
-                                            {{ item.vicinity }}
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
+                        <ul class="list-group">
+                            <li
+                                v-for="item in displayedrestaurants"
+                                v-bind:key="item"
+                                class="list-group-item my-2"
+                            >
+                                <!-- {{ item }} -->
+                                <!-- <restaurantitem :restaurant="item">
+                                </restaurantitem> -->
+
+                                <div>
+                                    <div class="row p-1">
+                                        <div class="col-md-8 m-2">
+                                            <div class="row">
+                                                <div>
+                                                    {{ item.name }}
+                                                    <a
+                                                        :class="
+                                                            item.opening_hours
+                                                                .open_now ===
+                                                            true
+                                                                ? 'text-success'
+                                                                : 'text-danger'
+                                                        "
+                                                    >
+                                                        •
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <small>{{
+                                                    item.vicinity
+                                                }}</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md m-2">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="row">
+                                                        {{ item.rating }}
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <small
+                                                            >00 km away</small
+                                                        >
+                                                    </div>
+                                                </div>
+
+                                                <div class="col">
+                                                    <button
+                                                        class="btn btn-success"
+                                                        @click="
+                                                            openMap(
+                                                                item.geometry
+                                                                    .location,
+                                                                item.place_id
+                                                            )
+                                                        "
+                                                    >
+                                                        view
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <button
+                                    type="button"
+                                    class="page-link"
+                                    v-if="page != 1"
+                                    @click="page--"
+                                >
+                                    Previous
+                                </button>
+                            </li>
+                            <li class="page-item">
+                                <button
+                                    type="button"
+                                    class="page-link"
+                                    v-for="pageNumber in pages.slice(
+                                        page - 1,
+                                        page + 5
+                                    )"
+                                    v-bind:key="pageNumber"
+                                    @click="page = pageNumber"
+                                >
+                                    {{ pageNumber }}
+                                </button>
+                            </li>
+                            <li class="page-item">
+                                <button
+                                    type="button"
+                                    @click="page++"
+                                    v-if="page < pages.length"
+                                    class="page-link"
+                                >
+                                    Next
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -107,10 +253,41 @@
 </template>
 
 <script>
+import restaurantitem from "./RestaurantItem.vue";
+
 export default {
+    components: {
+        restaurantitem
+    },
+
     data() {
         return {
-            restaurants: [
+            restaurants: [""],
+            page: 1,
+            perPage: 5,
+            pages: [],
+            search: "",
+            radius: 0,
+            activetab: 1
+        };
+    },
+    methods: {
+        openMap: function(location, id) {
+            var lat = location.lat;
+            var lng = location.lng;
+            window.open(
+                "https://www.google.com/maps/search/?api=1&query=" +
+                    lat +
+                    "%2C" +
+                    lng +
+                    "&query_place_id=" +
+                    id,
+                "_blank"
+            );
+        },
+
+        getrestaurants() {
+            this.restaurants = [
                 {
                     business_status: "OPERATIONAL",
                     geometry: {
@@ -1242,8 +1419,46 @@ export default {
                     user_ratings_total: 145,
                     vicinity: "Level 4 Overseas Passenger Terminal, The Rocks"
                 }
-            ]
-        };
+            ];
+        },
+        setPages() {
+            let numberOfPages = Math.ceil(
+                this.restaurants.length / this.perPage
+            );
+            for (let index = 1; index <= numberOfPages; index++) {
+                this.pages.push(index);
+            }
+        },
+        paginate(restaurants) {
+            let page = this.page;
+            let perPage = this.perPage;
+            let from = page * perPage - perPage;
+            let to = page * perPage;
+            return restaurants.slice(from, to);
+        }
+    },
+    computed: {
+        displayedrestaurants() {
+            return this.paginate(this.restaurants);
+        }
+    },
+    watch: {
+        restaurants() {
+            this.setPages();
+        }
+    },
+    created() {
+        this.getrestaurants();
+    },
+    filters: {
+        trimWords(value) {
+            return (
+                value
+                    .split(" ")
+                    .splice(0, 20)
+                    .join(" ") + "..."
+            );
+        }
     }
 };
 </script>
@@ -1286,5 +1501,66 @@ export default {
 .result-wrapper {
     background-color: #ffffff;
     border-radius: 5px;
+}
+
+button.page-link {
+    display: inline-block;
+}
+button.page-link {
+    font-size: 20px;
+}
+.offset {
+    width: 500px !important;
+    margin: 20px auto;
+}
+
+/* Style the tabs */
+.tabs {
+    overflow: hidden;
+    margin-left: 20px;
+    margin-bottom: -2px;
+}
+
+.tabs ul {
+    list-style-type: none;
+    margin-left: 20px;
+}
+
+.tabs a {
+    float: left;
+    cursor: pointer;
+    padding: 12px 24px;
+    transition: background-color 0.2s;
+    border: 1px solid #ccc;
+    border-right: none;
+    background-color: #f1f1f1;
+    border-radius: 10px 10px 0 0;
+    font-weight: bold;
+}
+.tabs a:last-child {
+    border-right: 1px solid #ccc;
+}
+
+/* Change background color of tabs on hover */
+.tabs a:hover {
+    background-color: #aaa;
+    color: #fff;
+}
+
+/* Styling for active tab */
+.tabs a.active {
+    background-color: #fff;
+    color: #484848;
+    border-bottom: 2px solid #fff;
+    cursor: default;
+}
+
+/* Style the tab content */
+.tabcontent {
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 3px 3px 6px #e1e1e1;
+    background-color: rgb(255, 255, 255);
 }
 </style>
