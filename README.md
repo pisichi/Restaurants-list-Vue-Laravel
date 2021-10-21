@@ -4,6 +4,22 @@
 
 > simple Webapplication to show a list of Restaurants by using Google Map API with Vue and Laravel framework.
 
+
+
+
+
+## Screenshots
+
+![App Screenshot](https://i.imgur.com/MKT2htn.png)
+
+###
+
+![App Screenshot](https://i.imgur.com/PSzJtBh.png)
+
+
+
+
+
 ## Install
 
 ```sh
