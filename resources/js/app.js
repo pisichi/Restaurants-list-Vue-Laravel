@@ -3,20 +3,15 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-//  import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
- import "bootstrap";
- import 'bootstrap/dist/css/bootstrap.css'
- import axios from 'axios';
- import VueGeolocation from 'vue-browser-geolocation';
 
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.css";
+import axios from "axios";
+import VueGeolocation from "vue-browser-geolocation";
+import * as VueGoogleMaps from "vue2-google-maps";
 
-//  import 'bootstrap-vue/dist/bootstrap-vue.css'
+window.Vue = require("vue").default;
 
-
-window.Vue = require('vue').default;
-
-// Vue.use(BootstrapVue)
-// Vue.use(IconsPlugin)
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -27,10 +22,18 @@ window.Vue = require('vue').default;
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+Vue.config.productionTip = false;
+Vue.component("searchpage", require("./components/SearchPage.vue").default);
+Vue.component("navbar", require("./components/Navbar.vue").default);
 
-Vue.component('searchpage', require('./components/SearchPage.vue').default);
 Vue.prototype.$http = axios;
 Vue.use(VueGeolocation);
+Vue.use(VueGoogleMaps, {
+    load: {
+        key: "AIzaSyAUPxyRExhTiYE3jBa4cA72IzVyvpO3TF0",
+        libraries: "places"
+    }
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -39,5 +42,5 @@ Vue.use(VueGeolocation);
  */
 
 const app = new Vue({
-    el: '#app',
+    el: "#app"
 });

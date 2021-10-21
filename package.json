@@ -25,6 +25,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "vue-browser-geolocation": "^1.8.0"
+        "vue-browser-geolocation": "^1.8.0",
+        "vue2-google-maps": "^0.10.7"
     }
 }

@@ -2,49 +2,85 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Request;
+use Illuminate\Http\Request;
 use App\Models\Restaurant;
 use SKAgarwal\GoogleApi\PlacesApi;
 use Illuminate\Support\Facades\Http;
 
 class RestaurantsController extends Controller
 {
-    
+    /*
+|-------------------------------------------------------------------------------
+| Get Restaurants list from keyword
+|-------------------------------------------------------------------------------
+| URL:            /api/v1/Restaurantss
+| Method:         GET
+| Description:    Gets an individual Restaurants
+| Parameters:
+|   $id   -> ID of the Restaurants we are retrieving
+*/
 
+    public function getRestaurants(Request $request)
+    {
+        $keyword = $request->input('keyword');
 
-  public function getRestaurants(){
-    $url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants%20in%20Bangsue&key=' . $_ENV['GOOGLE_PLACE_API'];;
-    $response = file_get_contents($url);
-    $newsData = json_decode($response);
+        //cache 20 for mins     
+        $data = cache()->remember($keyword, 60 * 20 * 1, function () use (
+            &$keyword
+        ) {
+            $url =
+                'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants%20in%20' .
+                $keyword .
+                '&key=' .
+                $_ENV['GOOGLE_PLACE_API'];
+            $response = file_get_contents(htmlspecialchars_decode($url));
+            $data = json_decode($response)->results;
+            return response()->json($data);
+        });
 
+        // foreach ($data as $item) {
+        //     //foreach element in $arr
 
-    return response()->json($newsData);         
+        //     $url =
+        //         'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=' .
+        //         $item->photos[0]->photo_reference .
+        //         '&key=' .
+        //         $_ENV['GOOGLE_PLACE_API'];
+        //     $response = file_get_contents(htmlspecialchars_decode($url));
+        //     $image = base64_encode($response);
 
-    // $restaurants = Restaurant::all();
+        //     $item->image = response()->json(
+        //         [
+        //             'message' => 'Fetched sight!',
+        //             'image' => $image,
+        //         ],
+        //         201
+        //     );
+        // }
 
-    // $response = GooglePlaces::placeAutocomplete('BangSue');
-    // $googlePlaces = new PlacesApi('AIzaSyAg9Rds1NqIp3_c8CzqJABKnN90vz8pSC8');
-    // // $response = $googlePlaces->placeAutocomplete('BangSue');
+        return response()->json($data->original);
+    }
 
-    // $radius = 1500;
+    public function getRestaurantImg($photo_reference)
+    {
+        $url =
+            'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&' .
+            $photo_reference .
+            '&key=' .
+            $_ENV['GOOGLE_PLACE_API'];
+        $response = file_get_contents($url);
+        $image = base64_encode($response);
 
-    // $location = [
+        return response()->json(
+            [
+                'message' => 'Fetched sight!',
+                'image' => $image,
+            ],
+            201
+        );
+    }
 
-    //     'latitude' => '36.187740',
-
-    //     'longitude' => '-92.731422'
-
-    // ];
-
-    // $response = $googlePlaces->nearbySearch($location, 1500, []);
-    
-
-
-    // return response()->json( $response );
-    // return ["name"=>"test"];
-}
-
-/*
+    /*
 |-------------------------------------------------------------------------------
 | Get An Individual Restaurants
 |-------------------------------------------------------------------------------
@@ -54,13 +90,23 @@ class RestaurantsController extends Controller
 | Parameters:
 |   $id   -> ID of the Restaurants we are retrieving
 */
-public function getRestaurant( $id ){
-    $restaurant = Restaurant::where('id', '=', $id)->first();
+    public function getRestaurantsNear(Request $request)
+    {
+        $location = $request->input('location');
+        $radius = $request->input('radius');
 
-    return response()->json( $restaurant );
-}
+        $url =
+            'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' .
+            $location .
+            '&radius=1500&type=restaurant&key=' .
+            $_ENV['GOOGLE_PLACE_API'];
+        $response = file_get_contents(htmlspecialchars_decode($url));
+        $data = json_decode($response)->results;
 
-/*
+        return response()->json($data);
+    }
+
+    /*
 |-------------------------------------------------------------------------------
 | Adds a New Restaurants
 |-------------------------------------------------------------------------------
@@ -68,24 +114,4 @@ public function getRestaurant( $id ){
 | Method:         POST
 | Description:    Adds a new Restaurants to the application
 */
-public function postNewRestaurants(){
-    $restaurant = new restaurant();
-
-    /*
-  Get the Latitude and Longitude returned from the Google Maps Address.
-*/
-$coordinates = GoogleMaps::geocodeAddress( $request->get('address'));
-
-
-    $restaurant->name     = Request::get('name');
-    $restaurant->address  = Request::get('address');
-    $restaurant->latitude   = $coordinates['lat'];
-    $restaurant->longitude  = $coordinates['lng'];
-
-    $restaurant->save();
-    
-    return response()->json($restaurant, 201);
-}
-
-
 }
