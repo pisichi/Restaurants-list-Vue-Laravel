@@ -2,29 +2,36 @@
     <div class="bg">
         <navbar></navbar>
 
-        <!-- TOP SECTION -->
         <!-- HEADER & LOCATION -->
 
         <div class="search-page-wrapper container-fluid">
             <div class="row justify-content-center">
                 <div class="col-5 mt-5 text-center">
-                    <h1 class="search-page-header">
-                        Search Restaurant
+                    <h1>
+                        <span class="search-page-header">
+                            Search Restaurant</span
+                        >
                     </h1>
-                    <p class="search-page-description">
-                        current location lat:{{ this.coordinates.lat }} lng:{{
-                            this.coordinates.lng
-                        }}
+                    <b>current location</b>
+                    <p>
+                        Latitude:
+                        <span class="search-page-description">
+                            {{ this.coordinates.lat }}
+                        </span>
+                        Longitude:
+                        <span class="search-page-description"
+                            >{{ this.coordinates.lng }}
+                        </span>
                     </p>
                 </div>
             </div>
 
-            <!-- MID SECTION -->
-            <!-- SEARCH BAR -->
+            <!-- SEARCH BAR ELEMENT-->
 
             <div class="row justify-content-center mt-5">
                 <div class="col-lg-8 col-md-10 col-sm-12">
                     <div class="search-wrapper container">
+                        <!-- TABS -->
                         <div id="tabs">
                             <div class="tabs">
                                 <a
@@ -45,6 +52,7 @@
                             </div>
 
                             <div class="content">
+                                <!-- KEYWORD TAB -->
                                 <div v-if="activetab === 1" class="tabcontent">
                                     <div class="row justify-content-center">
                                         <div class="col-md-8 mb-1 px-0 mx-3">
@@ -93,6 +101,9 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- RADIUS TAB -->
+
                                 <div v-if="activetab === 2" class="tabcontent">
                                     <div class="row justify-content-center">
                                         <div class="col-md-6 mb-1 px-0 mx-1">
@@ -103,6 +114,8 @@
                                                         your location)</small
                                                     ></label
                                                 >
+                                                <!-- AUTO COMPLETE GOOGLE MAP SERCH COMPONENT -->
+                                                <!-- FROM VUE2-GOOGLEMAP -->
                                                 <GmapAutocomplete
                                                     @place_changed="setPlace"
                                                     placeholder="Enter a location"
@@ -162,25 +175,25 @@
                 </div>
             </div>
 
-            <!-- LOWER SECTION -->
-            <!-- RESTAURANTS LIST -->
+            <!-- RESTAURANTS LIST ELEMENT-->
 
             <restauranlist
                 :restaurants="restaurants"
                 :pages="pages"
                 :coordinates="coordinates"
             ></restauranlist>
-
         </div>
     </div>
 </template>
 
 <script>
 import restauranlist from "./RestaurantList.vue";
+import navbar from "./NavBar.vue";
 
 export default {
     components: {
-        restauranlist
+        restauranlist,
+        navbar
     },
 
     data() {
@@ -192,13 +205,14 @@ export default {
                 lat: "",
                 lng: ""
             },
+            //address from location input
             currentPlace: null,
             //current active search tab (1 = keyword search, 2 = radius search)
             activetab: 1,
             //radius search value (km)
             radius: "1",
             //search input value(default = Bangsue)
-            keyword: "Bangkok",
+            keyword: "Bang sue",
             //search input validate
             valid: false
         };
@@ -228,8 +242,8 @@ export default {
             this.restaurants = [];
             var url = "/api/v1/restaurants/";
             //replace all with space with % for query
-            var params = { keyword: this.keyword.replace(" ", "%") };
-            //call api
+            var params = { keyword: this.keyword.replace(/\s/g, "%") };
+
             this.$http.get(url, { params: params }).then(response => {
                 this.restaurants = response.data;
             });
@@ -253,11 +267,9 @@ export default {
 
             //use current coordinates instead if currentPlace is null
             if (this.currentPlace) {
-                console.log("use cur");
                 lat = this.currentPlace.geometry.location.lat();
                 lng = this.currentPlace.geometry.location.lng();
             } else {
-                console.log("use def");
                 console.log(this.coordinates);
                 lat = this.coordinates.lat;
                 lng = this.coordinates.lng;
@@ -291,21 +303,36 @@ export default {
 </script>
 
 <style scoped>
+/* Background Div */
+
+.bg {
+    background-color: #f5f5f5;
+    background: url("../../../public/map-bg.png") no-repeat center center fixed;
+    height: 100vh;
+    /* width: 100vw; */
+    overflow: auto;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+/* Header Texts */
+
 .search-page-header {
     font-family: Consolas, monaco, monospace;
     font-weight: 600;
     font-size: 3rem;
+    /* Centered Text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.search-page-description {
-}
+.search-page-description{
+    color:#41B883;
+     font-weight: 600;
 
-.bg {
-    background-color: #f5f5f5;
-    background-image: url("../../../public/map-bg.png");
-    height: 100vh;
-    /* width: 100vw; */
-    overflow: auto;
 }
 
 /* Style the tabs */

@@ -24,7 +24,6 @@ window.Vue = require("vue").default;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 Vue.config.productionTip = false;
 Vue.component("searchpage", require("./components/SearchPage.vue").default);
-Vue.component("navbar", require("./components/Navbar.vue").default);
 
 Vue.prototype.$http = axios;
 Vue.use(VueGeolocation);

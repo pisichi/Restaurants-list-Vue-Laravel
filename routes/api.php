@@ -26,5 +26,5 @@ Route::group(['prefix' => 'v1', 'middleware' ], function(){
 });
 Route::get('/restaurants', 'App\Http\Controllers\API\RestaurantsController@getRestaurants');
 Route::get('/restaurantsnear', 'App\Http\Controllers\API\RestaurantsController@getRestaurantsNear');
-Route::get('/restaurantimg', 'App\Http\Controllers\API\RestaurantsController@getRestaurantImg');
+// Route::get('/restaurantimg', 'App\Http\Controllers\API\RestaurantsController@getRestaurantImg');
 });

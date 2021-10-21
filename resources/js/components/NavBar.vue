@@ -1,4 +1,5 @@
 <template>
+    <!-- NAVBAR RESPONSIVE-->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark main-nav">
         <div class="container">
             <button
@@ -11,30 +12,42 @@
             </button>
             <div class="collapse navbar-collapse w-100">
                 <ul class="nav navbar-nav w-100">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://vuejs.org/">Vue</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Download</a>
+                        <a class="nav-link" href="https://laravel.com/"
+                            >Laravel</a
+                        >
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">More</a>
+                        <a
+                            class="nav-link"
+                            href="https://developers.google.com/maps/documentation"
+                            >Google Maps API</a
+                        >
                     </li>
                 </ul>
             </div>
             <a class="navbar-brand order-first order-md-0 mx-0" href="#"
-                >Brand</a
+                >Restaurant Google Map</a
             >
             <div class="collapse navbar-collapse w-100">
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Help</a>
+                        <a class="nav-link" href="https://www.linkedin.com/in/pisitchaisiri/"
+                            ><i
+                                class="fa fa-linkedin-square fa-lg"
+                                aria-hidden="true"
+                            ></i>
+                            Linkedin</a
+                        >
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
+                        <a class="nav-link" href="https://github.com/pisichi"
+                            ><i class="fa fa-github fa-lg" aria-hidden="true"></i>
+                            Github</a
+                        >
                     </li>
                 </ul>
             </div>

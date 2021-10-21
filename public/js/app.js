@@ -2065,9 +2065,9 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Navbar.vue?vue&type=script&lang=js&":
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/NavBar.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Navbar.vue?vue&type=script&lang=js& ***!
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/NavBar.vue?vue&type=script&lang=js& ***!
   \*************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -2076,6 +2076,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2269,6 +2282,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     //restaurants data
@@ -2281,7 +2304,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       //current page
       page: 1,
-      //lists per page
+      //restaurant list per page
       perPage: 5,
       //google map api (for demonstration only)
       google_api: "AIzaSyAUPxyRExhTiYE3jBa4cA72IzVyvpO3TF0"
@@ -2295,14 +2318,14 @@ __webpack_require__.r(__webpack_exports__);
       window.open("https://www.google.com/maps/search/?api=1&query=" + lat + "%2C" + lng + "&query_place_id=" + id, "_blank");
     },
     //calculate the distance between client location and restaurant lcation
+    //https://www.htmlgoodies.com/javascript/calculate-the-distance-between-two-points-in-your-web-apps/
     distance: function distance(coords) {
       //client locatio
       var lat1 = this.coordinates.lat;
       var lon1 = this.coordinates.lng; //restaurant lcation
 
       var lat2 = coords.lat;
-      var lon2 = coords.lng; //Math stuff
-
+      var lon2 = coords.lng;
       var radlat1 = Math.PI * lat1 / 180;
       var radlat2 = Math.PI * lat2 / 180;
       var theta = lon1 - lon2;
@@ -2324,6 +2347,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     //scroll to top (doesn't work)
+    // TODO: Make the page sctoll to top when the page value has changed
     scrollTop: function scrollTop() {
       // console.log("scroll!! DAMMIT!!!")
       Vue.prototype.$scrollToTop = function () {
@@ -2338,8 +2362,10 @@ __webpack_require__.r(__webpack_exports__);
       var to = page * perPage;
       return restaurants.slice(from, to);
     },
-    // check if image of that restaurant exist or not?
+    // check if image of that restaurant exist or not
     // if not, return placeholder url
+    // NOTE: using laravel to call the image for each restaurant is too slow
+    // So I've move it here
     checkImage: function checkImage(item) {
       if ("photos" in item) return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=" + item.photos[0].photo_reference + "&key=" + this.google_api;else {
         return "https://t4.ftcdn.net/jpg/02/07/87/79/360_F_207877921_BtG6ZKAVvtLyc5GWpBNEIlIxsffTtWkv.jpg";
@@ -2377,6 +2403,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _RestaurantList_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RestaurantList.vue */ "./resources/js/components/RestaurantList.vue");
+/* harmony import */ var _NavBar_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NavBar.vue */ "./resources/js/components/NavBar.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2560,10 +2587,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    restauranlist: _RestaurantList_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    restauranlist: _RestaurantList_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    navbar: _NavBar_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
@@ -2574,13 +2614,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         lat: "",
         lng: ""
       },
+      //address from location input
       currentPlace: null,
       //current active search tab (1 = keyword search, 2 = radius search)
       activetab: 1,
       //radius search value (km)
       radius: "1",
       //search input value(default = Bangsue)
-      keyword: "Bangkok",
+      keyword: "Bang sue",
       //search input validate
       valid: false
     };
@@ -2618,8 +2659,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 url = "/api/v1/restaurants/"; //replace all with space with % for query
 
                 params = {
-                  keyword: _this.keyword.replace(" ", "%")
-                }; //call api
+                  keyword: _this.keyword.replace(/\s/g, "%")
+                };
 
                 _this.$http.get(url, {
                   params: params
@@ -2657,11 +2698,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 //use current coordinates instead if currentPlace is null
                 if (_this2.currentPlace) {
-                  console.log("use cur");
                   lat = _this2.currentPlace.geometry.location.lat();
                   lng = _this2.currentPlace.geometry.location.lng();
                 } else {
-                  console.log("use def");
                   console.log(_this2.coordinates);
                   lat = _this2.coordinates.lat;
                   lng = _this2.coordinates.lng;
@@ -2745,7 +2784,6 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"
 
 Vue.config.productionTip = false;
 Vue.component("searchpage", __webpack_require__(/*! ./components/SearchPage.vue */ "./resources/js/components/SearchPage.vue")["default"]);
-Vue.component("navbar", __webpack_require__(/*! ./components/Navbar.vue */ "./resources/js/components/Navbar.vue")["default"]);
 Vue.prototype.$http = (axios__WEBPACK_IMPORTED_MODULE_2___default());
 Vue.use((vue_browser_geolocation__WEBPACK_IMPORTED_MODULE_3___default()));
 Vue.use(vue2_google_maps__WEBPACK_IMPORTED_MODULE_4__, {
@@ -7296,7 +7334,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* Frosty glass effect */\n.result-wrapper[data-v-77ddbf26] {\r\n    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);\r\n    border-radius: 5px;\r\n    background: inherit;\r\n    overflow: auto;\r\n    overflow-x: hidden;\r\n    max-width: 1000px;\n}\n.result-wrapper[data-v-77ddbf26]:before {\r\n    box-shadow: 0 0 1rem 0 rgba(255, 255, 255, 0.2);\r\n    border-radius: 5px;\r\n    background-color: #f5f5f5;\r\n    overflow: auto;\r\n    overflow-x: hidden;\r\n    max-width: 100px;\n}\r\n\r\n/* Style the Lists */\n.list-card[data-v-77ddbf26] {\r\n    display: flex;\r\n    flex-direction: column;\r\n    margin: 1rem auto;\r\n    box-shadow: 0 3px 7px -1px rgba(0, 0, 0, 0.1);\r\n    margin-bottom: 1.6%;\r\n    background: #fff;\r\n    line-height: 1.4;\r\n    font-family: sans-serif;\r\n    border-radius: 5px;\r\n    overflow: hidden;\r\n    z-index: 0;\n}\n.list-card a[data-v-77ddbf26] {\r\n    color: inherit;\n}\n.list-card a[data-v-77ddbf26]:hover {\r\n    color: #5ad67d;\n}\n.list-card:hover .photo[data-v-77ddbf26] {\r\n    transform: scale(1.3) rotate(3deg);\n}\n.list-card .meta[data-v-77ddbf26] {\r\n    position: relative;\r\n    z-index: 0;\r\n    height: 200px;\n}\n.list-card .photo[data-v-77ddbf26] {\r\n    position: absolute;\r\n    top: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    left: 0;\r\n    background-size: cover;\r\n    background-position: center;\r\n    transition: transform 0.2s;\n}\n.list-card .details[data-v-77ddbf26],\r\n.list-card .details ul[data-v-77ddbf26] {\r\n    margin: auto;\r\n    padding: 0;\r\n    list-style: none;\n}\n.list-card .details[data-v-77ddbf26] {\r\n    position: absolute;\r\n    top: 0;\r\n    bottom: 0;\r\n    left: -100%;\r\n    margin: auto;\r\n    transition: left 0.2s;\r\n    background: rgba(0, 0, 0, 0.6);\r\n    color: #fff;\r\n    padding: 10px;\r\n    width: 100%;\r\n    font-size: 0.9rem;\n}\n.list-card .details a[data-v-77ddbf26] {\r\n    -webkit-text-decoration: dotted underline;\r\n            text-decoration: dotted underline;\n}\n.list-card .details ul li[data-v-77ddbf26] {\r\n    display: inline-block;\n}\n.list-card .details .users[data-v-77ddbf26]:before {\r\n    font-family: FontAwesome;\r\n    margin-right: 10px;\r\n    content: \"\\f007\";\n}\n.list-card .details .review[data-v-77ddbf26]:before {\r\n    font-family: FontAwesome;\r\n    margin-right: 10px;\r\n    content: \"\\f005\";\r\n    color: #fac000;\n}\n.list-card .details .tags ul[data-v-77ddbf26]:before {\r\n    font-family: FontAwesome;\r\n    content: \"\\f02b\";\r\n    margin-right: 10px;\n}\n.list-card .details .tags li[data-v-77ddbf26] {\r\n    margin-right: 2px;\n}\n.list-card .details .tags li[data-v-77ddbf26]:first-child {\r\n    margin-left: -4px;\n}\n.list-card .description[data-v-77ddbf26] {\r\n    padding: 1rem;\r\n    background: #fff;\r\n    position: relative;\r\n    z-index: 1;\n}\n.list-card .description h1[data-v-77ddbf26],\r\n.list-card .description h2[data-v-77ddbf26] {\r\n    font-family: Poppins, sans-serif;\n}\n.list-card .description h1[data-v-77ddbf26] {\r\n    line-height: 1;\r\n    margin: 0;\r\n    font-size: 1.3rem;\n}\n.list-card .description h2[data-v-77ddbf26] {\r\n    font-size: 1rem;\r\n    font-weight: 300;\r\n    text-transform: uppercase;\r\n    color: #a2a2a2;\r\n    margin-top: 5px;\n}\n.list-card .description .read-more[data-v-77ddbf26] {\r\n    text-align: right;\r\n    cursor: pointer;\n}\n.list-card .description .read-more a[data-v-77ddbf26] {\r\n    color: #5ad67d;\r\n    display: inline-block;\r\n    position: relative;\n}\n.list-card .description .read-more a[data-v-77ddbf26]:after {\r\n    content: \"\\f08e\";\r\n    font-family: FontAwesome;\r\n    margin-left: -10px;\r\n    opacity: 0;\r\n    vertical-align: middle;\r\n    transition: margin 0.3s, opacity 0.3s;\n}\n.list-card .description .read-more a[data-v-77ddbf26]:hover:after {\r\n    margin-left: 5px;\r\n    opacity: 1;\n}\n.list-card p[data-v-77ddbf26] {\r\n    position: relative;\r\n    margin: 1rem 0 0;\n}\n.list-card p[data-v-77ddbf26]:first-of-type {\r\n    margin-top: 1.25rem;\n}\n.list-card p[data-v-77ddbf26]:first-of-type:before {\r\n    content: \"\";\r\n    position: absolute;\r\n    height: 5px;\r\n    background: #5ad67d;\r\n    width: 35px;\r\n    top: -0.75rem;\r\n    border-radius: 3px;\n}\n.list-card:hover .details[data-v-77ddbf26] {\r\n    left: 0%;\n}\n@media (min-width: 640px) {\n.list-card[data-v-77ddbf26] {\r\n        flex-direction: row;\r\n        max-width: 700px;\n}\n.list-card .meta[data-v-77ddbf26] {\r\n        flex-basis: 40%;\r\n        height: auto;\n}\n.list-card .description[data-v-77ddbf26] {\r\n        flex-basis: 60%;\n}\n.list-card .description[data-v-77ddbf26]:before {\r\n        transform: skewX(-3deg);\r\n        content: \"\";\r\n        background: #fff;\r\n        width: 30px;\r\n        position: absolute;\r\n        left: -10px;\r\n        top: 0;\r\n        bottom: 0;\r\n        z-index: -1;\n}\n}\r\n\r\n/* Style the Pagination */\nbutton.page-link[data-v-77ddbf26] {\r\n    display: inline-block;\r\n    font-size: 20px;\r\n    background-color: #fff;\n}\nbutton.page-link[data-v-77ddbf26]:focus {\r\n    outline: none !important;\r\n    box-shadow: none !important;\r\n    background-color: #fff;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* Frosty glass effect */\n.result-wrapper[data-v-77ddbf26] {\r\n    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);\r\n    border-radius: 5px;\r\n    background: inherit;\r\n    overflow: auto;\r\n    overflow-x: hidden;\r\n    max-width: 1000px;\n}\n.result-wrapper[data-v-77ddbf26]:before {\r\n    box-shadow: 0 0 1rem 0 rgba(255, 255, 255, 0.2);\r\n    border-radius: 5px;\r\n    background-color: #f5f5f5;\r\n    overflow: auto;\r\n    overflow-x: hidden;\r\n    max-width: 100px;\n}\r\n\r\n/* Style the Lists */\n.list-card[data-v-77ddbf26] {\r\n    display: flex;\r\n    flex-direction: column;\r\n    margin: 1rem auto;\r\n    box-shadow: 0 3px 7px -1px rgba(0, 0, 0, 0.1);\r\n    margin-bottom: 1.6%;\r\n    background: #fff;\r\n    line-height: 1.4;\r\n    font-family: sans-serif;\r\n    border-radius: 5px;\r\n    overflow: hidden;\r\n    z-index: 0;\n}\n.list-card a[data-v-77ddbf26] {\r\n    color: inherit;\n}\n.list-card a[data-v-77ddbf26]:hover {\r\n    color: #5ad67d;\n}\n.list-card:hover .photo[data-v-77ddbf26] {\r\n    transform: scale(1.3) rotate(3deg);\n}\n.list-card .meta[data-v-77ddbf26] {\r\n    position: relative;\r\n    z-index: 0;\r\n    height: 200px;\n}\n.list-card .photo[data-v-77ddbf26] {\r\n    position: absolute;\r\n    top: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    left: 0;\r\n    background-size: cover;\r\n    background-position: center;\r\n    transition: transform 0.2s;\n}\n.list-card .details[data-v-77ddbf26],\r\n.list-card .details ul[data-v-77ddbf26] {\r\n    margin: auto;\r\n    padding: 0;\r\n    list-style: none;\n}\n.list-card .details[data-v-77ddbf26] {\r\n    position: absolute;\r\n    top: 0;\r\n    bottom: 0;\r\n    left: -100%;\r\n    margin: auto;\r\n    transition: left 0.2s;\r\n    background: rgba(0, 0, 0, 0.6);\r\n    color: #fff;\r\n    padding: 10px;\r\n    width: 100%;\r\n    font-size: 0.9rem;\n}\n.list-card .details a[data-v-77ddbf26] {\r\n    -webkit-text-decoration: dotted underline;\r\n            text-decoration: dotted underline;\n}\n.list-card .details ul li[data-v-77ddbf26] {\r\n    display: inline-block;\n}\n.list-card .details .users[data-v-77ddbf26]:before {\r\n    font-family: FontAwesome;\r\n    margin-right: 10px;\r\n    content: \"\\f007\";\n}\n.list-card .details .review[data-v-77ddbf26]:before {\r\n    font-family: FontAwesome;\r\n    margin-right: 10px;\r\n    content: \"\\f005\";\r\n    color: #fac000;\n}\n.list-card .details .tags ul[data-v-77ddbf26]:before {\r\n    font-family: FontAwesome;\r\n    content: \"\\f02b\";\r\n    margin-right: 10px;\n}\n.list-card .details .tags li[data-v-77ddbf26] {\r\n    margin-right: 2px;\n}\n.list-card .details .tags li[data-v-77ddbf26]:first-child {\r\n    margin-left: -4px;\n}\n.list-card .description[data-v-77ddbf26] {\r\n    padding: 1rem;\r\n    background: #fff;\r\n    position: relative;\r\n    z-index: 1;\n}\n.list-card .description h1[data-v-77ddbf26],\r\n.list-card .description h2[data-v-77ddbf26] {\r\n    font-family: Poppins, sans-serif;\n}\n.list-card .description h1[data-v-77ddbf26] {\r\n    line-height: 1;\r\n    margin: 0;\r\n    font-size: 1.3rem;\n}\n.list-card .description h2[data-v-77ddbf26] {\r\n    font-size: 1rem;\r\n    font-weight: 300;\r\n    text-transform: uppercase;\r\n    color: #a2a2a2;\r\n    margin-top: 5px;\n}\n.list-card .description .read-more[data-v-77ddbf26] {\r\n    text-align: right;\r\n    cursor: pointer;\n}\n.list-card .description .read-more a[data-v-77ddbf26] {\r\n    color: #5ad67d;\r\n    display: inline-block;\r\n    position: relative;\n}\n.list-card .description .read-more a[data-v-77ddbf26]:after {\r\n    content: \"\\f08e\";\r\n    font-family: FontAwesome;\r\n    margin-left: -10px;\r\n    opacity: 0;\r\n    vertical-align: middle;\r\n    transition: margin 0.3s, opacity 0.3s;\n}\n.list-card .description .read-more a[data-v-77ddbf26]:hover:after {\r\n    margin-left: 5px;\r\n    opacity: 1;\n}\n.list-card p[data-v-77ddbf26] {\r\n    position: relative;\r\n    margin: 1rem 0 0;\n}\n.list-card p[data-v-77ddbf26]:first-of-type {\r\n    margin-top: 1.25rem;\n}\n.list-card p[data-v-77ddbf26]:first-of-type:before {\r\n    content: \"\";\r\n    position: absolute;\r\n    height: 5px;\r\n    background: #5ad67d;\r\n    width: 35px;\r\n    top: -0.75rem;\r\n    border-radius: 3px;\n}\n.list-card:hover .details[data-v-77ddbf26] {\r\n    left: 0%;\n}\n@media (min-width: 640px) {\n.list-card[data-v-77ddbf26] {\r\n        flex-direction: row;\r\n        max-width: 700px;\n}\n.list-card .meta[data-v-77ddbf26] {\r\n        flex-basis: 40%;\r\n        height: auto;\n}\n.list-card .description[data-v-77ddbf26] {\r\n        flex-basis: 60%;\n}\n.list-card .description[data-v-77ddbf26]:before {\r\n        transform: skewX(-3deg);\r\n        content: \"\";\r\n        background: #fff;\r\n        width: 30px;\r\n        position: absolute;\r\n        left: -10px;\r\n        top: 0;\r\n        bottom: 0;\r\n        z-index: -1;\n}\n}\r\n\r\n/* Style the Pagination */\nbutton.page-link[data-v-77ddbf26] {\r\n    display: inline-block;\r\n    font-size: 20px;\r\n    background-color: #fff;\n}\nbutton.page-link[data-v-77ddbf26]:focus {\r\n    outline: none !important;\r\n    box-shadow: none !important;\r\n    background-color: #fff;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -7326,7 +7364,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()(_public_map_bg_png__WEBPACK_IMPORTED_MODULE_2__["default"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.search-page-header[data-v-3f64d182] {\r\n    font-family: Consolas, monaco, monospace;\r\n    font-weight: 600;\r\n    font-size: 3rem;\n}\n.search-page-description[data-v-3f64d182] {\n}\n.bg[data-v-3f64d182] {\r\n    background-color: #f5f5f5;\r\n    background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\r\n    height: 100vh;\r\n    /* width: 100vw; */\r\n    overflow: auto;\n}\r\n\r\n/* Style the tabs */\n.tabs[data-v-3f64d182] {\r\n    overflow: hidden;\r\n    margin-bottom: -2px;\n}\n.tabs ul[data-v-3f64d182] {\r\n    list-style-type: none;\r\n    margin-left: 20px;\n}\n.tabs a[data-v-3f64d182] {\r\n    float: left;\r\n    cursor: pointer;\r\n    padding: 12px 24px;\r\n    transition: background-color 0.2s;\r\n    border: 1px solid #ccc;\r\n    border-right: none;\r\n    background-color: #f1f1f1;\r\n    border-radius: 10px 10px 0 0;\r\n    font-weight: bold;\n}\n.tabs a[data-v-3f64d182]:last-child {\r\n    border-right: 1px solid #ccc;\n}\r\n\r\n/* Change background color of tabs on hover */\n.tabs a[data-v-3f64d182]:hover {\r\n    background-color: #aaa;\r\n    color: #fff;\n}\r\n\r\n/* Styling for active tab */\n.tabs a.active[data-v-3f64d182] {\r\n    background-color: #fff;\r\n    color: #484848;\r\n    border-bottom: 2px solid #fff;\r\n    cursor: default;\n}\r\n\r\n/* Style the tab content */\n.tabcontent[data-v-3f64d182] {\r\n    padding: 10px 30px 10px 30px;\r\n    border: 1px solid #ccc;\r\n    border-radius: 0px 10px 10px 10px;\r\n    box-shadow: 3px 3px 6px #e1e1e1;\r\n    background-color: rgb(255, 255, 255);\n}\r\n\r\n/* Styling for google map auto complete */\n.pac-target-input[data-v-3f64d182] {\r\n    width: 100%;\r\n    padding: 8px;\r\n    border-top-left-radius: 0.25rem;\r\n    border-top-right-radius: 0;\r\n    border-bottom-right-radius: 0;\r\n    padding: 0.375rem 2.25rem 0.375rem 0.75rem;\r\n    border: 1px solid #ced4da;\n}\r\n\r\n/* Styling for Select */\n.form-select[data-v-3f64d182] {\r\n    display: block;\r\n    width: 100%;\r\n    padding: 0.375rem 2.25rem 0.375rem 0.75rem;\r\n    -moz-padding-start: calc(0.75rem - 3px);\r\n    font-size: 1rem;\r\n    font-weight: 400;\r\n    line-height: 1.5;\r\n    color: #212529;\r\n    background-color: #fff;\r\n    background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e\");\r\n    background-repeat: no-repeat;\r\n    background-position: right 0.75rem center;\r\n    background-size: 16px 12px;\r\n    border: 1px solid #ced4da;\r\n    border-radius: 0.25rem;\r\n    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\r\n    -webkit-appearance: none;\r\n    -moz-appearance: none;\r\n    appearance: none;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* Background Div */\n.bg[data-v-3f64d182] {\r\n    background-color: #f5f5f5;\r\n    background: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ") no-repeat center center fixed;\r\n    height: 100vh;\r\n    /* width: 100vw; */\r\n    overflow: auto;\r\n    background-size: cover;\n}\r\n\r\n/* Header Texts */\n.search-page-header[data-v-3f64d182] {\r\n    font-family: Consolas, monaco, monospace;\r\n    font-weight: 600;\r\n    font-size: 3rem;\r\n    /* Centered Text */\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\n}\n.search-page-description[data-v-3f64d182]{\r\n    color:#41B883;\r\n     font-weight: 600;\n}\r\n\r\n/* Style the tabs */\n.tabs[data-v-3f64d182] {\r\n    overflow: hidden;\r\n    margin-bottom: -2px;\n}\n.tabs ul[data-v-3f64d182] {\r\n    list-style-type: none;\r\n    margin-left: 20px;\n}\n.tabs a[data-v-3f64d182] {\r\n    float: left;\r\n    cursor: pointer;\r\n    padding: 12px 24px;\r\n    transition: background-color 0.2s;\r\n    border: 1px solid #ccc;\r\n    border-right: none;\r\n    background-color: #f1f1f1;\r\n    border-radius: 10px 10px 0 0;\r\n    font-weight: bold;\n}\n.tabs a[data-v-3f64d182]:last-child {\r\n    border-right: 1px solid #ccc;\n}\r\n\r\n/* Change background color of tabs on hover */\n.tabs a[data-v-3f64d182]:hover {\r\n    background-color: #aaa;\r\n    color: #fff;\n}\r\n\r\n/* Styling for active tab */\n.tabs a.active[data-v-3f64d182] {\r\n    background-color: #fff;\r\n    color: #484848;\r\n    border-bottom: 2px solid #fff;\r\n    cursor: default;\n}\r\n\r\n/* Style the tab content */\n.tabcontent[data-v-3f64d182] {\r\n    padding: 10px 30px 10px 30px;\r\n    border: 1px solid #ccc;\r\n    border-radius: 0px 10px 10px 10px;\r\n    box-shadow: 3px 3px 6px #e1e1e1;\r\n    background-color: rgb(255, 255, 255);\n}\r\n\r\n/* Styling for google map auto complete */\n.pac-target-input[data-v-3f64d182] {\r\n    width: 100%;\r\n    padding: 8px;\r\n    border-top-left-radius: 0.25rem;\r\n    border-top-right-radius: 0;\r\n    border-bottom-right-radius: 0;\r\n    padding: 0.375rem 2.25rem 0.375rem 0.75rem;\r\n    border: 1px solid #ced4da;\n}\r\n\r\n/* Styling for Select */\n.form-select[data-v-3f64d182] {\r\n    display: block;\r\n    width: 100%;\r\n    padding: 0.375rem 2.25rem 0.375rem 0.75rem;\r\n    -moz-padding-start: calc(0.75rem - 3px);\r\n    font-size: 1rem;\r\n    font-weight: 400;\r\n    line-height: 1.5;\r\n    color: #212529;\r\n    background-color: #fff;\r\n    background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e\");\r\n    background-repeat: no-repeat;\r\n    background-position: right 0.75rem center;\r\n    background-size: 16px 12px;\r\n    border: 1px solid #ced4da;\r\n    border-radius: 0.25rem;\r\n    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\r\n    -webkit-appearance: none;\r\n    -moz-appearance: none;\r\n    appearance: none;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -7464,7 +7502,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/map-bg.png?6f2bfa581de5ad9252dee352e265153a");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/map-bg.png?6ebbc03687487a3f1b4c691218b0e094");
 
 /***/ }),
 
@@ -22705,9 +22743,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Navbar.vue":
+/***/ "./resources/js/components/NavBar.vue":
 /*!********************************************!*\
-  !*** ./resources/js/components/Navbar.vue ***!
+  !*** ./resources/js/components/NavBar.vue ***!
   \********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -22716,8 +22754,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Navbar_vue_vue_type_template_id_6dde423b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Navbar.vue?vue&type=template&id=6dde423b& */ "./resources/js/components/Navbar.vue?vue&type=template&id=6dde423b&");
-/* harmony import */ var _Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Navbar.vue?vue&type=script&lang=js& */ "./resources/js/components/Navbar.vue?vue&type=script&lang=js&");
+/* harmony import */ var _NavBar_vue_vue_type_template_id_5dd24bca___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NavBar.vue?vue&type=template&id=5dd24bca& */ "./resources/js/components/NavBar.vue?vue&type=template&id=5dd24bca&");
+/* harmony import */ var _NavBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NavBar.vue?vue&type=script&lang=js& */ "./resources/js/components/NavBar.vue?vue&type=script&lang=js&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -22727,9 +22765,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 ;
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Navbar_vue_vue_type_template_id_6dde423b___WEBPACK_IMPORTED_MODULE_0__.render,
-  _Navbar_vue_vue_type_template_id_6dde423b___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _NavBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _NavBar_vue_vue_type_template_id_5dd24bca___WEBPACK_IMPORTED_MODULE_0__.render,
+  _NavBar_vue_vue_type_template_id_5dd24bca___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -22739,7 +22777,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/Navbar.vue"
+component.options.__file = "resources/js/components/NavBar.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -22826,9 +22864,9 @@ component.options.__file = "resources/js/components/SearchPage.vue"
 
 /***/ }),
 
-/***/ "./resources/js/components/Navbar.vue?vue&type=script&lang=js&":
+/***/ "./resources/js/components/NavBar.vue?vue&type=script&lang=js&":
 /*!*********************************************************************!*\
-  !*** ./resources/js/components/Navbar.vue?vue&type=script&lang=js& ***!
+  !*** ./resources/js/components/NavBar.vue?vue&type=script&lang=js& ***!
   \*********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -22837,8 +22875,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Navbar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Navbar.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NavBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavBar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/NavBar.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NavBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -23075,19 +23113,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Navbar.vue?vue&type=template&id=6dde423b&":
+/***/ "./resources/js/components/NavBar.vue?vue&type=template&id=5dd24bca&":
 /*!***************************************************************************!*\
-  !*** ./resources/js/components/Navbar.vue?vue&type=template&id=6dde423b& ***!
+  !*** ./resources/js/components/NavBar.vue?vue&type=template&id=5dd24bca& ***!
   \***************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_6dde423b___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_6dde423b___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavBar_vue_vue_type_template_id_5dd24bca___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavBar_vue_vue_type_template_id_5dd24bca___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_6dde423b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Navbar.vue?vue&type=template&id=6dde423b& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Navbar.vue?vue&type=template&id=6dde423b&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NavBar_vue_vue_type_template_id_5dd24bca___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavBar.vue?vue&type=template&id=5dd24bca& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/NavBar.vue?vue&type=template&id=5dd24bca&");
 
 
 /***/ }),
@@ -23302,9 +23340,9 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Navbar.vue?vue&type=template&id=6dde423b&":
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/NavBar.vue?vue&type=template&id=5dd24bca&":
 /*!******************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Navbar.vue?vue&type=template&id=6dde423b& ***!
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/NavBar.vue?vue&type=template&id=5dd24bca& ***!
   \******************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -23345,28 +23383,39 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("div", { staticClass: "collapse navbar-collapse w-100" }, [
             _c("ul", { staticClass: "nav navbar-nav w-100" }, [
-              _c("li", { staticClass: "nav-item active" }, [
-                _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                  _vm._v("Home")
-                ])
+              _c("li", { staticClass: "nav-item" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "nav-link",
+                    attrs: { href: "https://vuejs.org/" }
+                  },
+                  [_vm._v("Vue")]
+                )
               ]),
               _vm._v(" "),
               _c("li", { staticClass: "nav-item" }, [
-                _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                  _vm._v("Download")
-                ])
+                _c(
+                  "a",
+                  {
+                    staticClass: "nav-link",
+                    attrs: { href: "https://laravel.com/" }
+                  },
+                  [_vm._v("Laravel")]
+                )
               ]),
               _vm._v(" "),
               _c("li", { staticClass: "nav-item" }, [
-                _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                  _vm._v("Register")
-                ])
-              ]),
-              _vm._v(" "),
-              _c("li", { staticClass: "nav-item" }, [
-                _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                  _vm._v("More")
-                ])
+                _c(
+                  "a",
+                  {
+                    staticClass: "nav-link",
+                    attrs: {
+                      href: "https://developers.google.com/maps/documentation"
+                    }
+                  },
+                  [_vm._v("Google Maps API")]
+                )
               ])
             ])
           ]),
@@ -23377,21 +23426,45 @@ var staticRenderFns = [
               staticClass: "navbar-brand order-first order-md-0 mx-0",
               attrs: { href: "#" }
             },
-            [_vm._v("Brand")]
+            [_vm._v("Restaurant Google Map")]
           ),
           _vm._v(" "),
           _c("div", { staticClass: "collapse navbar-collapse w-100" }, [
             _c("ul", { staticClass: "nav navbar-nav ml-auto" }, [
               _c("li", { staticClass: "nav-item" }, [
-                _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                  _vm._v("Help")
-                ])
+                _c(
+                  "a",
+                  {
+                    staticClass: "nav-link",
+                    attrs: {
+                      href: "https://www.linkedin.com/in/pisitchaisiri/"
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fa fa-linkedin-square fa-lg",
+                      attrs: { "aria-hidden": "true" }
+                    }),
+                    _vm._v("\n                        Linkedin")
+                  ]
+                )
               ]),
               _vm._v(" "),
               _c("li", { staticClass: "nav-item" }, [
-                _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                  _vm._v("Contact")
-                ])
+                _c(
+                  "a",
+                  {
+                    staticClass: "nav-link",
+                    attrs: { href: "https://github.com/pisichi" }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fa fa-github fa-lg",
+                      attrs: { "aria-hidden": "true" }
+                    }),
+                    _vm._v("\n                        Github")
+                  ]
+                )
               ])
             ])
           ])
@@ -23473,9 +23546,11 @@ var render = function() {
                             _c(
                               "ul",
                               _vm._l(item.types, function(tag, idx) {
-                                return _c("li", { key: idx }, [
-                                  _c("a", [_vm._v(_vm._s(tag))])
-                                ])
+                                return _c(
+                                  "li",
+                                  { key: idx, staticClass: "mx-1" },
+                                  [_c("a", [_vm._v(_vm._s(tag))])]
+                                )
                               }),
                               0
                             )
@@ -23684,20 +23759,27 @@ var render = function() {
         [
           _c("div", { staticClass: "row justify-content-center" }, [
             _c("div", { staticClass: "col-5 mt-5 text-center" }, [
-              _c("h1", { staticClass: "search-page-header" }, [
-                _vm._v(
-                  "\n                    Search Restaurant\n                "
-                )
-              ]),
+              _vm._m(0),
               _vm._v(" "),
-              _c("p", { staticClass: "search-page-description" }, [
+              _c("b", [_vm._v("current location")]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v("\n                    Latitude:\n                    "),
+                _c("span", { staticClass: "search-page-description" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(this.coordinates.lat) +
+                      "\n                    "
+                  )
+                ]),
                 _vm._v(
-                  "\n                    current location lat:" +
-                    _vm._s(this.coordinates.lat) +
-                    " lng:" +
-                    _vm._s(this.coordinates.lng) +
-                    "\n                "
-                )
+                  "\n                    Longitude:\n                    "
+                ),
+                _c("span", { staticClass: "search-page-description" }, [
+                  _vm._v(
+                    _vm._s(this.coordinates.lng) + "\n                    "
+                  )
+                ])
               ])
             ])
           ]),
@@ -23750,7 +23832,7 @@ var render = function() {
                                 { staticClass: "col-md-8 mb-1 px-0 mx-3" },
                                 [
                                   _c("div", { staticClass: "form-group" }, [
-                                    _vm._m(0),
+                                    _vm._m(1),
                                     _vm._v(" "),
                                     _c("input", {
                                       directives: [
@@ -23794,7 +23876,7 @@ var render = function() {
                                 { staticClass: "col-md-2 mb-1 px-0 mx-3" },
                                 [
                                   _c("div", { staticClass: "form-group" }, [
-                                    _vm._m(1),
+                                    _vm._m(2),
                                     _vm._v(" "),
                                     _c(
                                       "button",
@@ -23841,7 +23923,7 @@ var render = function() {
                                     "div",
                                     { staticClass: "form-group" },
                                     [
-                                      _vm._m(2),
+                                      _vm._m(3),
                                       _vm._v(" "),
                                       _c("GmapAutocomplete", {
                                         attrs: {
@@ -23861,7 +23943,7 @@ var render = function() {
                                 { staticClass: "col-md-3 mb-1 px-0 mx-1" },
                                 [
                                   _c("div", { staticClass: "form-group" }, [
-                                    _vm._m(3),
+                                    _vm._m(4),
                                     _vm._v(" "),
                                     _c(
                                       "select",
@@ -23933,7 +24015,7 @@ var render = function() {
                                 { staticClass: "col-md-2  px-0 mx-1" },
                                 [
                                   _c("div", { staticClass: "form-group" }, [
-                                    _vm._m(4),
+                                    _vm._m(5),
                                     _vm._v(" "),
                                     _c(
                                       "button",
@@ -23984,6 +24066,16 @@ var render = function() {
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h1", [
+      _c("span", { staticClass: "search-page-header" }, [
+        _vm._v("\n                        Search Restaurant")
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

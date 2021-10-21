@@ -2,13 +2,24 @@
 <p>
 </p>
 
-> 5HVSRQVLYH ZHE DSSOLFDWLRQ WR VKRZ WKH OLVW RI 5HVWDXUDQWV E\ XVLQJ
+> simple Webapplication to show a list of Restaurants by using Google Map API with Vue and Laravel framework.
 
 ## Install
 
 ```sh
+composer install
+```
+
+```sh
 npm install
 ```
+
+## Setup
+add this to your env file
+```
+GOOGLE_PLACE_API= "your Google palce api"
+```
+
 
 ## Usage
 
@@ -16,16 +27,15 @@ npm install
 php artisan serve
 ```
 
+```sh
+npm run watch
+```
+
+
 ## Author
 
 👤 **pisitchai**
 
 * Github: [@pisichi](https://github.com/pisichi)
-* LinkedIn: [@https:\/\/www.linkedin.com\/in\/pisitchai-siriratanachaikul-a76aa71b4\/](https://linkedin.com/in/https:\/\/www.linkedin.com\/in\/pisitchai-siriratanachaikul-a76aa71b4\/)
+* LinkedIn: [@Pisitchai](https://www.linkedin.com/in/PisitchaiSiri)
 
-## Show your support
-
-Give a ⭐️ if this project helped you!
-
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_

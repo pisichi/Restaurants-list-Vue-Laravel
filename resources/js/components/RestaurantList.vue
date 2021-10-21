@@ -1,5 +1,7 @@
 <template>
     <div class="container-fluid">
+        <!-- RESTAURANT LIST HEADER ELEMENT-->
+
         <div class="row justify-content-center my-5">
             <div
                 class="result-wrapper container col col-lg-8 col-md-10 col-sm-12 "
@@ -17,6 +19,8 @@
                 </div>
 
                 <div class="row justify-content-center">
+                    <!-- RESTAURANT LIST ELEMENT-->
+                    <!-- TODO: Create seperate component-->
                     <ul class="list-group col-10">
                         <li
                             v-for="(item, idx) in displayedrestaurants"
@@ -24,6 +28,8 @@
                             class="list-group-item my-2 p-3"
                         >
                             <div class="list-card">
+                                <!-- PHOTO SECTION-->
+
                                 <div class="meta">
                                     <div
                                         class="photo"
@@ -34,7 +40,6 @@
                                         "
                                     ></div>
 
-                                    <!-- <div class="photo"></div> -->
                                     <ul class="details">
                                         <li class="review">
                                             {{ item.rating }}
@@ -44,7 +49,7 @@
                                         </li>
                                         <li class="tags">
                                             <ul>
-                                                <li
+                                                <li class="mx-1"
                                                     v-for="(tag,
                                                     idx) in item.types"
                                                     :key="idx"
@@ -55,6 +60,9 @@
                                         </li>
                                     </ul>
                                 </div>
+
+                                <!-- DESCRIPTION SECTION-->
+
                                 <div class="description">
                                     <h1>
                                         {{ item.name }}
@@ -88,6 +96,8 @@
 
                 <!-- PAGINATION BOTTOM-->
                 <div class="row justify-content-center">
+                    <!-- PAGINATION ELEMENT-->
+                    <!-- TODO: Create seperate component-->
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             <li class="page-item">
@@ -146,7 +156,7 @@ export default {
         return {
             //current page
             page: 1,
-            //lists per page
+            //restaurant list per page
             perPage: 5,
             //google map api (for demonstration only)
             google_api: "AIzaSyAUPxyRExhTiYE3jBa4cA72IzVyvpO3TF0"
@@ -170,6 +180,8 @@ export default {
         },
 
         //calculate the distance between client location and restaurant lcation
+        //https://www.htmlgoodies.com/javascript/calculate-the-distance-between-two-points-in-your-web-apps/
+
         distance(coords) {
             //client locatio
             var lat1 = this.coordinates.lat;
@@ -178,7 +190,6 @@ export default {
             var lat2 = coords.lat;
             var lon2 = coords.lng;
 
-            //Math stuff
             var radlat1 = (Math.PI * lat1) / 180;
             var radlat2 = (Math.PI * lat2) / 180;
             var theta = lon1 - lon2;
@@ -206,6 +217,7 @@ export default {
         },
 
         //scroll to top (doesn't work)
+        // TODO: Make the page sctoll to top when the page value has changed
         scrollTop() {
             // console.log("scroll!! DAMMIT!!!")
             Vue.prototype.$scrollToTop = () => window.scrollTo(0, 0);
@@ -220,8 +232,10 @@ export default {
             return restaurants.slice(from, to);
         },
 
-        // check if image of that restaurant exist or not?
+        // check if image of that restaurant exist or not
         // if not, return placeholder url
+        // NOTE: using laravel to call the image for each restaurant is too slow
+        // So I've move it here
         checkImage(item) {
             if ("photos" in item)
                 return (
