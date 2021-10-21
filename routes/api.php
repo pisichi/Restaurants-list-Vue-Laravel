@@ -19,12 +19,48 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['prefix' => 'v1', 'middleware'], function () {
+    Route::get('/user', function (Request $request) {});
 
-Route::group(['prefix' => 'v1', 'middleware' ], function(){
-    Route::get('/user', function( Request $request ){
-        
-});
-Route::get('/restaurants', 'App\Http\Controllers\API\RestaurantsController@getRestaurants');
-Route::get('/restaurantsnear', 'App\Http\Controllers\API\RestaurantsController@getRestaurantsNear');
-// Route::get('/restaurantimg', 'App\Http\Controllers\API\RestaurantsController@getRestaurantImg');
+    /*
+    |-------------------------------------------------------------------------------
+    | Get Restaurants from keyord(s)
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/restaurants
+    | Controller:     App\Http\Controllers\API\RestaurantsController@getRestaurants
+    | Method:         GET
+    | Description:   Get all Restaurants from keyord(s)
+    */
+
+    Route::get(
+        '/restaurants',
+        'App\Http\Controllers\API\RestaurantsController@getRestaurants'
+    );
+
+    /*
+    |-------------------------------------------------------------------------------
+    | Get Restaurants from location
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/restaurantsnear
+    | Controller:     App\Http\Controllers\API\RestaurantsController@getRestaurantsNear
+    | Method:         GET
+    | Description:    Gets all Restaurants from location and distance
+    */
+
+    Route::get(
+        '/restaurantsnear',
+        'App\Http\Controllers\API\RestaurantsController@getRestaurantsNear'
+    );
+
+    /*
+    |-------------------------------------------------------------------------------
+    | Get an Restaurant image
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/restaurantimg
+    | Method:         GET
+    | Controller:     App\Http\Controllers\API\RestaurantsController@getRestaurantImg
+    | Description:    Gets a Restaurant image
+    */
+
+    // Route::get('/restaurantimg', 'App\Http\Controllers\API\RestaurantsController@getRestaurantImg');
 });

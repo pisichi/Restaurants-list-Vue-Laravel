@@ -49,7 +49,8 @@
                                         </li>
                                         <li class="tags">
                                             <ul>
-                                                <li class="mx-1"
+                                                <li
+                                                    class="mx-1"
                                                     v-for="(tag,
                                                     idx) in item.types"
                                                     :key="idx"
@@ -60,6 +61,7 @@
                                         </li>
                                     </ul>
                                 </div>
+                                <!-- END PHOTO SECTION-->
 
                                 <!-- DESCRIPTION SECTION-->
 
@@ -71,6 +73,10 @@
                                         {{ distance(item.geometry.location) }}
                                         km
                                     </h2>
+
+                                     <!-- keyword search and radius search has different address key/format-->
+                                     <!-- keyword = formatted_address and radius = vicinity -->
+
                                     <p v-if="item.formatted_address !== null">
                                         {{ item.formatted_address }}
                                     </p>
@@ -89,8 +95,10 @@
                                         >
                                     </p>
                                 </div>
+                                <!-- END DESCRIPTION SECTION-->
                             </div>
                         </li>
+                        <!--END  RESTAURANT LIST ELEMENT-->
                     </ul>
                 </div>
 
@@ -136,6 +144,7 @@
                             </li>
                         </ul>
                     </nav>
+                    <!--END PAGINATION ELEMENT-->
                 </div>
             </div>
         </div>
@@ -149,6 +158,7 @@ export default {
         restaurants: [],
         //currenttly shown lists
         pages: [],
+        //Client location
         coordinates: Object
     },
 
@@ -164,7 +174,7 @@ export default {
     },
 
     methods: {
-        //open googlemap for restaurant in new tab
+        //open googlemap for restaurant in new tab using simple link
         openMap: function(location, id) {
             var lat = location.lat;
             var lng = location.lng;
@@ -179,14 +189,13 @@ export default {
             );
         },
 
-        //calculate the distance between client location and restaurant lcation
+        //calculate the distance between client location and restaurant location
         //https://www.htmlgoodies.com/javascript/calculate-the-distance-between-two-points-in-your-web-apps/
-
         distance(coords) {
-            //client locatio
+            //client location
             var lat1 = this.coordinates.lat;
             var lon1 = this.coordinates.lng;
-            //restaurant lcation
+            //restaurant location
             var lat2 = coords.lat;
             var lon2 = coords.lng;
 
@@ -217,11 +226,11 @@ export default {
         },
 
         //scroll to top (doesn't work)
-        // TODO: Make the page sctoll to top when the page value has changed
-        scrollTop() {
-            // console.log("scroll!! DAMMIT!!!")
-            Vue.prototype.$scrollToTop = () => window.scrollTo(0, 0);
-        },
+        // Make the page sctoll to top when the page value has changed
+        // scrollTop() {
+        //    
+        //     Vue.prototype.$scrollToTop = () => window.scrollTo(0, 0);
+        // },
 
         //pagination stuff
         paginate(restaurants) {
@@ -232,11 +241,9 @@ export default {
             return restaurants.slice(from, to);
         },
 
-        // check if image of that restaurant exist or not
+        // check if image value of the restaurant exist or not
         // if not, return placeholder url
-        // NOTE: using laravel to call the image for each restaurant is too slow
-        // So I've move it here
-        checkImage(item) {
+        checkImage(item) { 
             if ("photos" in item)
                 return (
                     "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=" +

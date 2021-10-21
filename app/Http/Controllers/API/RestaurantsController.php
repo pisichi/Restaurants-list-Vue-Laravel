@@ -9,19 +9,20 @@ use Illuminate\Support\Facades\Http;
 
 class RestaurantsController extends Controller
 {
-    /*
-|-------------------------------------------------------------------------------
-| Get Restaurants list from keyword
-|-------------------------------------------------------------------------------
-| URL:            /api/v1/restaurants
-| Method:         GET
-| Description:    Gets Restaurants from keyword(s)
-| Request Parameters:
-|    $keyword   -> keyword String from the merged string array
-                   ["keyword1","keyword2"] => "keyword1%keyword2"
-*/
 
-    //note cannot find a way to get more than 20 results at once.
+    /*
+    |-------------------------------------------------------------------------------
+    | Get Restaurants list from keyword
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/restaurants
+    | Method:         GET
+    | Description:    Gets Restaurants from keyword(s)
+    | Request Parameters:
+    |    $keyword   -> keyword String from the merged string array
+                       ["keyword1","keyword2"] => "keyword1%keyword2"
+    */
+
+    //note: currently only return 20 results
     public function getRestaurants(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -44,19 +45,19 @@ class RestaurantsController extends Controller
     }
 
     /*
-|-------------------------------------------------------------------------------
-| Get Restaurants list from from coordinates and radius(km)
-|-------------------------------------------------------------------------------
-| URL:            /api/v1/restaurantsnear
-| Method:         GET
-| Description:    Gets an individual Restaurant from location and distance
-| Request Parameters:
-|   $location    ->  a string of latitude and longitude in this format
-                      lat + "%2c" + lng
-    $radius     -> number (KM)        
-*/
+    |-------------------------------------------------------------------------------
+    | Get Restaurants list from from coordinates and radius(km)
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/restaurantsnear
+    | Method:         GET
+    | Description:    Gets Restaurants from location and distance
+    | Request Parameters:
+    |   $location    ->  a string of latitude and longitude in this format
+                         lat + "%2c" + lng
+        $radius     ->   number (KM)        
+    */
 
-    //note cannot find a way to get more than 20 results at once.
+    //note: currently only return 20 results
     public function getRestaurantsNear(Request $request)
     {
         $location = $request->input('location');
@@ -65,7 +66,7 @@ class RestaurantsController extends Controller
         //cache response data for 10 mins
         $data = cache()->remember(
             $location . $radius,
-            60 * 20 * 1,
+            60 * 10 * 1,
             function () use (&$location) {
                 $url =
                     'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' .
@@ -84,18 +85,17 @@ class RestaurantsController extends Controller
 
     
     /*
-|-------------------------------------------------------------------------------
-| Get an Restaurant image
-|-------------------------------------------------------------------------------
-| URL:            /api/v1/restaurantimg
-| Method:         GET
-| Description:    Gets an individual Restaurant image from its reference
-| Return:        Encoded base64 image
-| Request Parameter:
-    $photo_reference     ->  String
+    |-------------------------------------------------------------------------------
+    | Get an Restaurant image
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/restaurantimg
+    | Method:         GET
+    | Description:    Gets an individual Restaurant image from its reference
+    | Return:         Encoded base64 image
+    | Request Parameter: $photo_reference     ->  String
 
-*/
-
+    */
+    
     // public function getRestaurantImg($photo_reference)
     // {
     //     $url =

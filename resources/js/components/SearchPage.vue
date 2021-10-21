@@ -1,5 +1,6 @@
 <template>
     <div class="bg">
+        <!--NAVBAR -->
         <navbar></navbar>
 
         <!-- HEADER & LOCATION -->
@@ -62,6 +63,7 @@
                                                         >keyword</small
                                                     ></label
                                                 >
+                                                <!-- KEYWORD INPUT -->
                                                 <input
                                                     id="keyword-input"
                                                     type="search"
@@ -101,9 +103,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- END KEYWORD TAB -->
 
                                 <!-- RADIUS TAB -->
-
                                 <div v-if="activetab === 2" class="tabcontent">
                                     <div class="row justify-content-center">
                                         <div class="col-md-6 mb-1 px-0 mx-1">
@@ -116,6 +118,7 @@
                                                 >
                                                 <!-- AUTO COMPLETE GOOGLE MAP SERCH COMPONENT -->
                                                 <!-- FROM VUE2-GOOGLEMAP -->
+                                                <!-- LOCATION INPUT -->
                                                 <GmapAutocomplete
                                                     @place_changed="setPlace"
                                                     placeholder="Enter a location"
@@ -130,6 +133,7 @@
                                                         >radius(km)</small
                                                     ></label
                                                 >
+                                                <!-- RADIUS INPUT -->
                                                 <select
                                                     class="form-select"
                                                     v-model="radius"
@@ -169,11 +173,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- END RADIUS TAB -->
                             </div>
                         </div>
+                        <!-- END TABS -->
                     </div>
                 </div>
             </div>
+            <!-- END SEARCH BAR ELEMENT -->
 
             <!-- RESTAURANTS LIST ELEMENT-->
 
@@ -182,6 +189,7 @@
                 :pages="pages"
                 :coordinates="coordinates"
             ></restauranlist>
+            <!-- END RESTAURANTS LIST ELEMENT-->
         </div>
     </div>
 </template>
@@ -329,10 +337,9 @@ export default {
     align-items: center;
 }
 
-.search-page-description{
-    color:#41B883;
-     font-weight: 600;
-
+.search-page-description {
+    color: #41b883;
+    font-weight: 600;
 }
 
 /* Style the tabs */

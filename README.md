@@ -30,12 +30,6 @@ composer install
 npm install
 ```
 
-## Setup
-add this to your env file
-```
-GOOGLE_PLACE_API= "your Google palce api"
-```
-
 
 ## Usage
 
