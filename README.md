@@ -47,5 +47,5 @@ npm run watch
 👤 **pisitchai**
 
 * Github: [@pisichi](https://github.com/pisichi)
-* LinkedIn: [@Pisitchai](https://www.linkedin.com/in/PisitchaiSiri)
+* LinkedIn: [@Pisitchai](https://www.linkedin.com/in/pisitchaisiri/)
 
